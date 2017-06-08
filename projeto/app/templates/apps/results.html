@@ -1,3 +1,6 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'apps/style.css' %}" />
+
 <h2>{{ questao.texto }}</h2>
 
 <ul> {% for e in questao.escolha_set.all %}

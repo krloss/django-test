@@ -11,7 +11,7 @@ from .models import Questao,Escolha
 
 # Create your views here.
 def index(request):
-	return HttpResponse('Olá Mundo!!!')
+	return HttpResponse('<a href="/app/list">Olá Mundo!!!</a>')
 
 def lista(request):
 	questoes = Questao.objects.order_by('-data')[:5]
