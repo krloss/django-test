@@ -1,6 +1,7 @@
 {% if questoes %}
 	<ul> {% for q in questoes %}
-		<li><a href="/app/{{ q.id }}/">{{ q.texto }}</a></li>
+		<li>Antigo <a href="/app/{{ q.id }}/">{{ q.texto }}</a></li>
+		<li><a href="{% url 'detalhe' q.id %}">{{ q.texto }}</a></li>
 	{% endfor %} </ul>
 {% else %}
 	<h1>Nenhuma Questao</h1>
