@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.http import Http404
+from django.shortcuts import render,get_object_or_404
+from django.http import HttpResponse,Http404
 from django.template import loader
 
 from .models import Questao
@@ -21,10 +20,11 @@ def lista(request):
 	return HttpResponse(template.render(context,request))
 
 def detalhe(request,questao_id):
-	try:
-		q = Questao.objects.get(pk=questao_id)
-	except Questao.DoesNotExist:
-		raise Http404('Questao Inexistente')
+	#try:
+	#	q = Questao.objects.get(pk=questao_id)
+	#except Questao.DoesNotExist:
+	#	raise Http404('Questao Inexistente')
+	q = get_object_or_404(Questao, pk=questao_id)
 	#return HttpResponse("Questao %s." % questao_id)
 	return render(request,'apps/detail.html',{'questao':q})
 
