@@ -2,10 +2,11 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render,get_object_or_404
-from django.http import HttpResponse,Http404
+from django.http import HttpResponse,Http404,HttpResponseRedirect
+from django.urls import reverse
 from django.template import loader
 
-from .models import Questao
+from .models import Questao,Escolha
 
 # Create your views here.
 
@@ -29,8 +30,19 @@ def detalhe(request,questao_id):
 	return render(request,'apps/detail.html',{'questao':q})
 
 def resultados(request,questao_id):
-	response = "Resultados %s."
-	return HttpResponse(response % questao_id)
+	q = get_object_or_404(Questao, pk=questao_id)
+	return render(request,'apps/results.html',{'questao':q})
 
 def voto(request,questao_id):
+	q = get_object_or_404(Questao, pk=questao_id)
+
+	try:
+		escolha = q.escolha_set.get(pk=request.POST['escolha'])
+	except (KeyError,Escolha.DoesNotExist):
+		return render(request,'apps/detail.html',{'questao':q, 'error_message':'Sem Escolha.'})
+	else:
+		escolha.voto += 1
+		escolha.save()
+		return HttpResponseRedirect(reverse('resultados', args=(q.id,)))
+
 	return HttpResponse("Votou na questao %s." % questao_id)
