@@ -45,6 +45,9 @@ class DetailView(generic.DetailView):
 	model = Questao
 	template_name = 'apps/detail.html'
 
+	def get_queryset(self):
+		return Questao.objects.filter(data__lte=timezone.now())
+
 def resultados(request,questao_id):
 	q = get_object_or_404(Questao, pk=questao_id)
 	return render(request,'apps/results.html',{'questao':q})

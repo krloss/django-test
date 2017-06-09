@@ -14,6 +14,19 @@ def criar_questao(texto,dias):
 	time = timezone.now() + datetime.timedelta(days=dias)
 	return Questao.objects.create(texto=texto, data=time)
 
+class QuestaoDetalheViewTestes(TestCase):
+	def teste_futura_questao(self):
+		fq = criar_questao(texto='Futuro', dias=5)
+		url = reverse('detalhe',args=(fq.id,))
+		response = self.client.get(url)
+		self.assertEqual(response.status_code,404)
+
+	def teste_antiga_questao(self):
+		aq = criar_questao(texto='Antigo', dias=-5)
+		url = reverse('detalhe',args=(aq.id,))
+		response = self.client.get(url)
+		self.assertContains(response,aq.texto)
+
 class QuestaoViewTestes(TestCase):
 	def teste_sem_questao(self):
 		response = self.client.get(reverse('questoes'))
