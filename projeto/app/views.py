@@ -6,6 +6,8 @@ from django.http import HttpResponse,Http404,HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
 from django.template import loader
+from django.utils import timezone
+
 
 from .models import Questao,Escolha
 
@@ -25,7 +27,10 @@ class QuestoesView(generic.ListView):
 	context_object_name = 'questoes'
 
 	def get_queryset(self):
-		return Questao.objects.order_by('-data')[:5]
+		#return Questao.objects.order_by('-data')[:5]
+		return Questao.objects.filter(
+			data__lte = timezone.now()
+		).order_by('-data')[:5]
 
 def detalhe(request,questao_id):
 	#try:
