@@ -15,7 +15,8 @@ class Questao(models.Model):
 		return self.texto
 
 	def recente(self):
-		return self.data > timezone.now() - datetime.timedelta(days=1)
+		now = timezone.now()
+		return now - datetime.timedelta(days=1) <= self.data <= now
 
 class Escolha(models.Model):
 	questao = models.ForeignKey(Questao, on_delete=models.CASCADE)
