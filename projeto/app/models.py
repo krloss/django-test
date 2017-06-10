@@ -9,7 +9,7 @@ import datetime
 # Create your models here.
 class Questao(models.Model):
 	texto = models.CharField(max_length=200)
-	data = models.DateTimeField('date published')
+	data = models.DateTimeField('publicacao')
 
 	def __str__(self):
 		return self.texto
@@ -17,6 +17,10 @@ class Questao(models.Model):
 	def recente(self):
 		now = timezone.now()
 		return now - datetime.timedelta(days=1) <= self.data <= now
+
+	recente.admin_order_field = 'data'
+	recente.boolean = True
+	recente.short_description = 'Novo?'
 
 class Escolha(models.Model):
 	questao = models.ForeignKey(Questao, on_delete=models.CASCADE)
